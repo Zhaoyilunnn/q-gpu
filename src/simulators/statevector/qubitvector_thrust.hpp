@@ -78,7 +78,7 @@ double mysecond()
 
 #define AER_DEFAULT_MATRIX_BITS   8
 
-#define AER_CHUNK_BITS        5
+#define AER_CHUNK_BITS        21
 #define AER_MAX_BUFFERS       2
 #define AER_MAX_GPU_BUFFERS   64
 #define AER_NUM_STREAM        2
