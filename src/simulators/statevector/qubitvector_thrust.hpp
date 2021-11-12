@@ -114,19 +114,14 @@ __global__ void CompressionKernel(ull* cbufd, uchar* dbufd, int* cutd, int* offd
   iindex += WARPSIZE / 2;
   lastidx = (threadIdx.x / WARPSIZE + 1) * (3 * WARPSIZE / 2) - 1;
   // warp id
-//  warp = (threadIdx.x + blockIdx.x * blockDim.x) / WARPSIZE;
   warp = ((threadIdx.x + blockIdx.x * blockDim.x) & (BLOCKS*WARPS_BLOCK*WARPSIZE-1)) / WARPSIZE;
-//  printf("Warp %d\n", warp);
   chunk = (threadIdx.x + blockIdx.x * blockDim.x) / (BLOCKS*WARPS_BLOCK*WARPSIZE);
-//  printf("Chunk %llu\n", chunk);
   // prediction index within previous subchunk
   offset = WARPSIZE - (dimensionalityd - lane % dimensionalityd) - lane;
 
   // determine start and end of chunk to compress
   start = 0;
-//  if (warp > 0) start = cutd[warp + chunk*BLOCKS*WARPS_BLOCK-1];
   if (warp > 0) start = warp*PER_CUT;
-//  term = cutd[warp + chunk*BLOCKS*WARPS_BLOCK];
   term = (warp+1)*PER_CUT;
   off = ((start+1)/2*17);
 
@@ -186,9 +181,7 @@ __global__ void CompressionKernel(ull* cbufd, uchar* dbufd, int* cutd, int* offd
 
   // save final value of off, which is total bytes of compressed output for this chunk
   if (lane == 31) {
-//    offd[warp] = off;
     if (warp > 0) {
-//      offd[warp + chunk*BLOCKS*WARPS_BLOCK] = off - (cutd[warp + chunk*BLOCKS*WARPS_BLOCK-1]+1)/2*17;
       offd[warp + chunk*BLOCKS*WARPS_BLOCK] = off - (warp*PER_CUT+1)/2*17;
     } else {
       offd[warp + chunk*BLOCKS*WARPS_BLOCK] = off;
@@ -198,24 +191,6 @@ __global__ void CompressionKernel(ull* cbufd, uchar* dbufd, int* cutd, int* offd
 //  printf("offdcompress: %d\n", offd[warp + chunk*BLOCKS*WARPS_BLOCK]);
 }
 
-//__global__ void SetOffsetTable(int* cbufd, int* offd)
-//{
-//  int tid = threadIdx.x + blockIdx.x * blockDim.x;
-//  cbufd[tid] = offd[tid];
-//}
-
-//__global__ void MergeOutput(uchar* dbufd, int* cutd, int* offd, ull* outsize)
-/*__global__ void MergeOutput(uchar*cbufd, uchar* dbufd, int* cutd, int* offd, ull* outsize)
-{
-  int tid = threadIdx.x + blockIdx.x * blockDim.x;
-  int offdest[WARPS_BLOCK*BLOCKS] = {0};
-
-  for (int i = 0; i < tid; i++) {
-    offdest[tid] += offd[i];
-  }
-  memcpy(cbufd + offdest[tid], dbufd + (tid > 0 ? (cutd[tid-1]+1)/2*17 : 0), offd[tid] * sizeof(uchar));
-  if (tid == BLOCKS*WARPS_BLOCK - 1) *outsize = offdest[tid] + offd[tid];
-}*/
 
 /************************************************************************************/
 
@@ -249,7 +224,6 @@ __global__ void DecompressionKernel(uchar* dbufd, int* cutd, ull* fbufd, bool* f
   iindex += WARPSIZE / 2;
   lastidx = (threadIdx.x / WARPSIZE + 1) * (3 * WARPSIZE / 2) - 1;
   // warp id
-//  warp = (threadIdx.x + blockIdx.x * blockDim.x) / WARPSIZE;
   warp = ((threadIdx.x + blockIdx.x * blockDim.x) & (BLOCKS*WARPS_BLOCK*WARPSIZE-1)) / WARPSIZE;
   chunk = (threadIdx.x + blockIdx.x * blockDim.x) / (BLOCKS*WARPS_BLOCK*WARPSIZE);
   // prediction index within previous subchunk
@@ -257,9 +231,7 @@ __global__ void DecompressionKernel(uchar* dbufd, int* cutd, ull* fbufd, bool* f
   if (flagd[chunk]) {
     // determine start and end of chunk to decompress
     start = 0;
-//  if (warp > 0) start = cutd[warp + chunk*BLOCKS*WARPS_BLOCK-1];
     if (warp > 0) start = warp * PER_CUT;
-//  term = cutd[warp + chunk*BLOCKS*WARPS_BLOCK];
     term = (warp + 1) * PER_CUT;
     off = ((start + 1) / 2 * 17);
 
