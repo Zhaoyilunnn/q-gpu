@@ -3281,45 +3281,6 @@ public:
     mask1 = (1ull << qubit1) - 1;
   }
 
-//  __host__ __device__ double operator()(const thrust::tuple<uint_t,struct GateParams<data_t>> &iter) const
-//  {
-//    uint_t i,i0,i1,i2,localMask;
-//    thrust::complex<data_t>* pV;
-//    uint_t* offsets;
-//    thrust::complex<data_t> q0,q1,q2,q3;
-//    struct GateParams<data_t> params;
-//
-//    i = ExtractIndexFromTuple(iter);
-//    params = ExtractParamsFromTuple(iter);
-//    pV = params.buf_;
-//    offsets = params.offsets_;
-//    localMask = params.lmask_;
-//
-//    i0 = i & mask0;
-//    i2 = (i - i0) << 1;
-//    i1 = i2 & mask1;
-//    i2 = (i2 - i1) << 1;
-//
-//    i0 = i0 + i1 + i2;
-//
-//    q0 = pV[offsets[0] + i0];
-//    q1 = pV[offsets[1] + i0];
-//    q2 = pV[offsets[2] + i0];
-//    q3 = pV[offsets[3] + i0];
-//
-//    if(localMask & 1)
-//      pV[offsets[0]+i0] = m00 * q0 + m10 * q1 + m20 * q2 + m30 * q3;
-//
-//    if(localMask & 2)
-//      pV[offsets[1]+i0] = m01 * q0 + m11 * q1 + m21 * q2 + m31 * q3;
-//
-//    if(localMask & 4)
-//      pV[offsets[2]+i0] = m02 * q0 + m12 * q1 + m22 * q2 + m32 * q3;
-//
-//    if(localMask & 8)
-//      pV[offsets[3]+i0] = m03 * q0 + m13 * q1 + m23 * q2 + m33 * q3;
-//    return 0.0;
-//  }
   __host__ __device__ double operator()(const thrust::tuple<uint_t,struct GateParams<data_t>> &iter) const
   {
     uint_t i,i0,i1,i2,localMask;
@@ -3409,13 +3370,6 @@ public:
     offsets = params.offsets_;
     pMat = params.matrix_;
     localMask = params.lmask_;
-
-    // i0 = i & mask0;
-    // i3 = (i - i0) << 1;
-    // i1 = i3 & mask1;
-    // i3 = (i3 - i1) << 1;
-    // i2 = i3 & mask2;
-    // i3 = (i3 - i2) << 1;
     
     // -------------- mod  ------------------
     uint_t new_mask0, new_mask1, new_mask2;
@@ -3599,15 +3553,6 @@ public:
     pMat = params.matrix_;
     localMask = params.lmask_;
 
-    // i0 = i & mask0;
-    // i4 = (i - i0) << 1;
-    // i1 = i4 & mask1;
-    // i4 = (i4 - i1) << 1;
-    // i2 = i4 & mask2;
-    // i4 = (i4 - i2) << 1;
-    // i3 = i4 & mask3;
-    // i4 = (i4 - i3) << 1;
-    
     // ---------------- mod --------------------
     uint_t new_mask0, new_mask1, new_mask2, new_mask3;
     new_mask0 = offsets[1] - 1;
@@ -3793,7 +3738,6 @@ public:
     idx = 0;
     ii = i;
     for(j=0;j<nqubits;j++){
-      // mask = (1ull << qubits[j]) - 1;
       mask = offsets[1ull << j] - 1; 
 
       t = ii & mask;
