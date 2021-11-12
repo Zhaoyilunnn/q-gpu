@@ -473,10 +473,6 @@ void State<statevec_t>::apply_ops(const std::vector<Operations::Op> &ops,
                                   RngEngine &rng,
                                   bool final_ops) {
 
-  char* pDebug = getenv("QCEXE");
-  char* pDebug2 = getenv("QCDEBUG");
-  std::cout << "Start applying operations ..." << std::endl;
-  std::ofstream outFile("/afs/cs.pitt.edu/usr0/yiz178/work/research/experiment/qc-simulation-acc/data/state_vec_qgpu.txt");
   // Simple loop over vector of input operations
   for (size_t i = 0; i < ops.size(); ++i) {
     if (pDebug2 != NULL) {
@@ -489,12 +485,6 @@ void State<statevec_t>::apply_ops(const std::vector<Operations::Op> &ops,
       }
     }
     const auto& op = ops[i];
-    // auto mat_vec = Utils::vectorize_matrix(op.mats[0]);
-    // for (auto v : mat_vec) {
-    //     std::cout << v << " ";
-    // }
-    // std::cout << std::endl;
-    std::cout << op.type << std::endl;
     if(BaseState::creg_.check_conditional(op)) {
       switch (op.type) {
         case Operations::OpType::barrier:
@@ -538,18 +528,6 @@ void State<statevec_t>::apply_ops(const std::vector<Operations::Op> &ops,
               "QubitVector::State::invalid instruction \'" + op.name + "\'.");
         }
     }
-    auto stat_vec = BaseState::qreg_.copy_to_vector();
-    if (pDebug != NULL) {
-      for (size_t i = 0; i < stat_vec.size(); i++) {
-        std::cout << stat_vec[i] << " ";
-      }
-//      for (auto state : stat_vec) {
-//        std::cout << state << " ";
-//      }
-      std::cout << std::endl;
-    }
-    
-    outFile.close();
   }
 }
 
