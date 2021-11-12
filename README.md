@@ -6,7 +6,7 @@ Please follow the instructions in the [contribution guidelines](https://github.c
 python ./setup.py bdist_wheel -- -DAER_THRUST_BACKEND=CUDA -DCMAKE_CUDA_COMPILER=${YOUR_NVIDIA_COMPILER_PATH}
 ```
 
-To run experiments, please see [this repo](https://github.com/Zhaoyilunnn/qc-experiment)
+To run experiments, please see [this repo](https://github.com/Zhaoyilunnn/q-gpu-exp)
 
 To enable multi-GPU simulation, first set up this environment variable
 
