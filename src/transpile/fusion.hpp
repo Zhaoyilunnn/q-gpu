@@ -443,10 +443,6 @@ void Fusion::optimize_circuit(Circuit& circ,
                               const opset_t &allowed_opset,
                               ExperimentResult &result) const {
 
-  // first reorder circuit
-  std::cout << "Order before reorder" << std::endl;
-  print_order(circ);
-
   // Start timer
   using clock_t = std::chrono::high_resolution_clock;
   auto timer_start = clock_t::now();

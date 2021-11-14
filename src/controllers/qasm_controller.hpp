@@ -933,7 +933,6 @@ void QasmController::run_circuit_helper(const Circuit& circ,
   auto fusion_pass = transpile_fusion(method, opt_circ.opset(), config);
   fusion_pass.optimize_circuit(opt_circ, dummy_noise, state.opset(), result);
 
-  std::cout << "Starting simulation ..." << std::endl;
   // Run simulation
   run_multi_shot(opt_circ, shots, state, initial_state, method, result, rng);
 }
