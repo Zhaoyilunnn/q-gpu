@@ -2308,12 +2308,6 @@ template <typename Function>
 double QubitVectorThrust<data_t>::apply_function(Function func,const reg_t &qubits) const
 {
   char* pDebug = getenv("QCDEBUG");
-  if (pDebug != NULL) {
-    for (int i = 0; i < 32; i++) {
-      std::cout << m_Chunks[1].GetValue(i) << " ";
-    }
-    std::cout << std::endl;
-  }
   cudaError_t err;
 
   const size_t N = qubits.size();
