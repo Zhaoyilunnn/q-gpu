@@ -475,15 +475,6 @@ void State<statevec_t>::apply_ops(const std::vector<Operations::Op> &ops,
 
   // Simple loop over vector of input operations
   for (size_t i = 0; i < ops.size(); ++i) {
-    if (pDebug2 != NULL) {
-      auto vec = BaseState::qreg_.copy_to_vector();
-      if (i == ops.size() - 1 || i == 90) {
-        for (int iVec = 0; iVec < vec.size(); ++iVec) {
-          outFile << vec[iVec] << " ";
-        }
-        outFile << "\n";
-      }
-    }
     const auto& op = ops[i];
     if(BaseState::creg_.check_conditional(op)) {
       switch (op.type) {
