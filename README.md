@@ -1,6 +1,6 @@
 ## Build from source
 
-Please follow the instructions in the [contribution guidelines](https://github.com/Qiskit/qiskit-aer/blob/master/CONTRIBUTING.md).
+To build this project, please follow the instructions in the [contribution guidelines](https://github.com/Qiskit/qiskit-aer/blob/master/CONTRIBUTING.md). After setting up prerequisite env, run the following commands for compilation.
 
 ```bash
 python ./setup.py bdist_wheel -- -DAER_THRUST_BACKEND=CUDA -DCMAKE_CUDA_COMPILER=${YOUR_NVIDIA_COMPILER_PATH}
@@ -19,12 +19,12 @@ export AER_MULTI_GPU=1
 | Branch name | Description |
 | --- | --- |
 | master | w/o compression |
-| compression | w/ compressin |
+| compression | w/ compression (num\_qubits >= 21) |
 
 ## References
 
-Q-GPU is developped by revising [QISKit-Aer](https://github.com/Qiskit/qiskit-aer). The baseline in the paper is [0.7.0](https://github.com/Qiskit/qiskit-aer/tree/0.7.0).
+Q-GPU is developped based on [QISKit-Aer](https://github.com/Qiskit/qiskit-aer), [0.7.0](https://github.com/Qiskit/qiskit-aer/tree/0.7.0). The original version is the baseline of paper.
 
-We use [GFC](https://userweb.cs.txstate.edu/~burtscher/research/GFC/) as data compression algorithm in Q-GPU.
+We use [GFC](https://userweb.cs.txstate.edu/~burtscher/research/GFC/) as data compression algorithm in Q-GPU. (With small modifications to adapt to Q-GPU.)
 
 
