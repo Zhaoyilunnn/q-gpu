@@ -825,19 +825,15 @@ void State<statevec_t>::apply_gate(const Operations::Op &op) {
       BaseState::qreg_.apply_mcphase(op.qubits, -1);
       break;
     case Gates::mcr:
-      // BaseState::qreg_.apply_mcu(op.qubits, Linalg::VMatrix::r(op.params[0], op.params[1]));
       BaseState::qreg_.apply_matrix(op.qubits, Linalg::VMatrix::r(op.params[0], op.params[1]));
       break;
     case Gates::mcrx:
-      // BaseState::qreg_.apply_mcu(op.qubits, Linalg::VMatrix::rx(op.params[0]));
       BaseState::qreg_.apply_matrix(op.qubits, Linalg::VMatrix::rx(op.params[0]));
       break;
     case Gates::mcry:
-      // BaseState::qreg_.apply_mcu(op.qubits, Linalg::VMatrix::ry(op.params[0]));
       BaseState::qreg_.apply_matrix(op.qubits, Linalg::VMatrix::ry(op.params[0]));
       break;
     case Gates::mcrz:
-      // BaseState::qreg_.apply_mcu(op.qubits, Linalg::VMatrix::rz(op.params[0]));
       BaseState::qreg_.apply_matrix(op.qubits, Linalg::VMatrix::rz(op.params[0]));
       break;
     case Gates::rxx:
